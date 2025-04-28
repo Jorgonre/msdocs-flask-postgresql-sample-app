@@ -30,7 +30,7 @@ else:
 
 
 # Configuración
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = 'templates/uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config.update(
