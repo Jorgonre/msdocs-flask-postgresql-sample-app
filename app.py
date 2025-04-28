@@ -79,11 +79,7 @@ def upload_image():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Modelo de base de datos para almacenar la información de la imagen subida
-class ImageUpload(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    image_path = db.Column(db.String(200), nullable=False)
-    upload_time = db.Column(db.String(50), nullable=False)
+
 
 # Rutas adicionales y utilidades...
 
