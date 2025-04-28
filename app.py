@@ -6,8 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__, static_folder='static')
-csrf = CSRFProtect(app)
+
 
 os.urandom(24)
 
