@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 os.urandom(24)
 
 app = Flask(__name__, static_folder='static')
-csrf = CSRFProtect(app)
+#csrf = CSRFProtect(app)
 
 
 
@@ -71,6 +71,7 @@ def create_restaurant():
 
 # Nueva ruta para subir imágenes
 @app.route('/upload', methods=['GET', 'POST'])
+#@csrf.exempt  # Desactivar CSRF solo para esta ruta
 def upload_image():
     if request.method == 'POST':
         # Verificar si hay un archivo en la solicitud
