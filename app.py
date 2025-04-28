@@ -9,6 +9,27 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, static_folder='static')
 csrf = CSRFProtect(app)
 
+os.urandom(24)
+
+app = Flask(__name__, static_folder='static')
+csrf = CSRFProtect(app)
+
+
+
+# Set the secret key for CSRF protection
+app.config['SECRET_KEY'] = 'your_secret_key_here'  # Usa una clave secreta segura
+
+# WEBSITE_HOSTNAME exists only in production environment
+if 'WEBSITE_HOSTNAME' not in os.environ:
+    # local development, where we'll use environment variables
+    print("Loading config.development and environment variables from .env file.")
+    app.config.from_object('azureproject.development')
+else:
+    # production
+    print("Loading config.production.")
+    app.config.from_object('azureproject.production')
+
+
 # Configuración
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
@@ -17,10 +38,16 @@ app.config.update(
     SQLALCHEMY_DATABASE_URI=os.getenv('DATABASE_URI', 'sqlite:///restaurants.db'),
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
-
-# Inicialización de la base de datos
+# Initialize the database connection
 db = SQLAlchemy(app)
+
+# Enable Flask-Migrate commands "flask db init/migrate/upgrade" to work
 migrate = Migrate(app, db)
+
+
+
+
+
 
 # Los modelos deben ser importados después de la inicialización de la base de datos
 from models import Restaurant, Review, ImageUpload
