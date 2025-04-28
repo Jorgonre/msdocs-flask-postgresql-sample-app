@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 
 
 
+
 os.urandom(24)
 
 app = Flask(__name__, static_folder='static')
@@ -30,7 +31,7 @@ else:
 
 
 # Configuración
-UPLOAD_FOLDER = 'templates/uploads/'
+UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config.update(
@@ -86,8 +87,11 @@ def upload_image():
         if file and allowed_file(file.filename):
             # Asegurarse de que el nombre del archivo es seguro
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            # Guardar la imagen en el servidor
+            # Guardar el archivo en la carpeta uploads en la raíz del proyecto
+            upload_folder = os.path.join(app.root_path, 'uploads')
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+            filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
             # Obtener la hora de la subida
@@ -100,7 +104,7 @@ def upload_image():
 
             return f"Image uploaded successfully! Uploaded at: {upload_time}"
 
-    return render_template('upload_image.html')  # Página con el formulario de carga de imágenes
+    return render_template('upload_image.html')  # Página con el formulario de carga de imág
 
 # Método para verificar que el archivo tiene una extensión permitida
 def allowed_file(filename):
