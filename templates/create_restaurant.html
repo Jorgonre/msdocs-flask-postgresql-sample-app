@@ -7,15 +7,19 @@
           min-height: 75rem;
           padding-top: 4.5rem;
       }
-  </style>
+    </style>
 {% endblock %}
 {% block content %}
     <h1>Add New Restaurant</h1>
 
-    <form method="POST" action="{{ url_for('add_restaurant') }}">
+    <form method="POST" action="{{ url_for('add_restaurant') }}" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="restaurant_name" class="form-label">Name</label>
           <input type="text" class="form-control" id="restaurant_name" name="restaurant_name">
+        </div>
+        <div class="mb-3">
+          <label for="restaurant_image" class="form-label">Restaurant Image</label>
+          <input type="file" class="form-control" id="restaurant_image" name="restaurant_image">
         </div>
         <div class="mb-3">
           <label for="street_address" class="form-label">Street Address</label>
@@ -29,4 +33,3 @@
         <button type="cancel" class="btn btn-primary">Cancel</button>
     </form>
 {% endblock %}
-    
