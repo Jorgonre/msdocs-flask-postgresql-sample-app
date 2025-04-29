@@ -119,9 +119,9 @@ def allowed_file(filename):
 def uploaded_file(filename):
     return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
 
-@app.route('/health', methods=['GET'])
-def health_check():
-    return jsonify({"status": "healthy"}), 200
+#@app.route('/health', methods=['GET'])
+#def health_check():
+    #return jsonify({"status": "healthy"}), 200
 
 
 # Rutas adicionales y utilidades...
