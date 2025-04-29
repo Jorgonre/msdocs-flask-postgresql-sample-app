@@ -6,9 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify
-from opencensus.ext.azure.trace_exporter import AzureExporter
-from opencensus.trace.samplers import ProbabilitySampler
-from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 
 
@@ -126,17 +123,6 @@ def uploaded_file(filename):
 #@app.route('/health', methods=['GET'])
 #def health_check():
     #return jsonify({"status": "healthy"}), 200
-
-# Middleware que auto-registra peticiones, excepciones y tiempos
-FlaskMiddleware(
-    app,
-    exporter=AzureExporter(),             # Coge la key de APPINSIGHTS_INSTRUMENTATIONKEY
-    sampler=ProbabilitySampler(1.0),      # 1.0 = 100% de muestreo
-)
-
-@app.route("/")
-def home():
-    return "¡Hola con App Insights!"
 
 
 # Rutas adicionales y utilidades...
