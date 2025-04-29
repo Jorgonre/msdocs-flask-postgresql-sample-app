@@ -40,4 +40,20 @@
       <div class="d-flex justify-content-end">
               <a href="{{ url_for('create_restaurant') }}" class="btn btn-success px-4 gap-3">Add new restaurant</a>
       </div>
+
+      <!-- GALERÍA DE IMÁGENES SUBIDAS -->
+      <hr>
+      <h2 class="mt-5">Uploaded Images</h2>
+      <div class="row">
+          {% for image in images %}
+              <div class="col-md-4 mb-4">
+                  <div class="card">
+                      <img src="{{ url_for('uploaded_file', filename=image.image_path) }}" class="card-img-top" alt="Uploaded Image">
+                      <div class="card-body">
+                          <p class="card-text">Uploaded at: {{ image.upload_time }}</p>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
 {% endblock %}
