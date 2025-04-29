@@ -7,7 +7,7 @@ DATABASE_URI = 'postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}'.forma
     dbhost=os.getenv('DBHOST', 'localhost'),
     dbname=os.getenv('DBNAME', 'dev_db')
 )
-#HOLA
+
 # Configuración adicional para desarrollo
 DEBUG = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False
