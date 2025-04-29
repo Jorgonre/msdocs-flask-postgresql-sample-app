@@ -57,8 +57,8 @@ from models import Restaurant, Review, ImageUpload
 @app.route('/', methods=['GET'])
 def index():
     print('Request for index page received')
-    restaurants = Restaurant.query.all()
-    return render_template('index.html', restaurants=restaurants)
+    images = ImageUpload.query.order_by(ImageUpload.upload_time.desc()).all()
+    return render_template('gallery.html', images=images)
 
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
