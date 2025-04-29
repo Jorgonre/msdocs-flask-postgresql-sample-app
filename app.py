@@ -100,7 +100,7 @@ def upload_image():
             upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             # Registrar la subida de la imagen en la base de datos (si deseas hacerlo)
-            image_record = ImageUpload(image_path=filename, upload_time=upload_time)
+            image_record = ImageUpload(image_path=filename, upload_time=upload_time) 
             db.session.add(image_record)
             db.session.commit()
 
