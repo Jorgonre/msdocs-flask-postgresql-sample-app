@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
-
+from flask import Flask, jsonify
 
 
 
@@ -13,6 +13,9 @@ from werkzeug.utils import secure_filename
 os.urandom(24)
 
 app = Flask(__name__, static_folder='static')
+
+
+
 #csrf = CSRFProtect(app)
 
 
@@ -115,6 +118,10 @@ def allowed_file(filename):
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "healthy"}), 200
 
 
 # Rutas adicionales y utilidades...
