@@ -3,6 +3,7 @@ from sqlalchemy.orm import validates
 
 from app import db
 
+#HOLA
 
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
