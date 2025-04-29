@@ -99,7 +99,7 @@ def upload_image():
             upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             # Registrar la subida de la imagen en la base de datos (si deseas hacerlo)
-            image_record = ImageUpload(image_path=filepath, upload_time=upload_time)
+            image_record = ImageUpload(image_path=filename, upload_time=upload_time)
             db.session.add(image_record)
             db.session.commit()
 
@@ -113,8 +113,7 @@ def allowed_file(filename):
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
+    return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
 
 
 # Rutas adicionales y utilidades...
