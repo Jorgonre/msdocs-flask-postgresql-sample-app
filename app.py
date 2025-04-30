@@ -72,9 +72,9 @@ def details(id):
     return render_template('details.html', restaurant=restaurant, reviews=reviews)
 
 @app.route('/create', methods=['GET'])
-def create_restaurant():
+def create_image():
     print('Request for add restaurant page received')
-    return render_template('create_restaurant.html')
+    return render_template('create_image.html')
 
 # Nueva ruta para subir imágenes
 @app.route('/upload', methods=['GET', 'POST'])
