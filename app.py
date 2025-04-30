@@ -9,8 +9,6 @@ from flask import Flask, jsonify
 
 
 
-
-
 os.urandom(24)
 
 app = Flask(__name__, static_folder='static')
@@ -76,40 +74,49 @@ def create_image():
     print('Request for add image page received')
     return render_template('create_image.html')
 
-# Nueva ruta para subir imágenes
 @app.route('/upload', methods=['GET', 'POST'])
-#@csrf.exempt  # Desactivar CSRF solo para esta ruta
 def upload_image():
     if request.method == 'POST':
-        # Verificar si hay un archivo en la solicitud
         if 'image_file' not in request.files:
             return "No file part", 400
         file = request.files['image_file']
 
-        # Si no seleccionaron un archivo
         if file.filename == '':
             return "No selected file", 400
 
         if file and allowed_file(file.filename):
-            # Asegurarse de que el nombre del archivo es seguro
             filename = secure_filename(file.filename)
-            # Guardar el archivo en la carpeta uploads en la raíz del proyecto
+
             upload_folder = os.path.join(app.root_path, 'uploads')
-            if not os.path.exists(upload_folder):
-                os.makedirs(upload_folder)
+            os.makedirs(upload_folder, exist_ok=True)
+
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
-            # Obtener la hora de la subida
-            upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # Calcular colores usando PIL
+            image = Image.open(filepath).convert('RGB')
+            pixels = list(image.getdata())
+            red = sum(p[0] for p in pixels)
+            green = sum(p[1] for p in pixels)
+            blue = sum(p[2] for p in pixels)
 
-            # Registrar la subida de la imagen en la base de datos (si deseas hacerlo)
-            image_record = ImageUpload(image_path=filename, upload_time=upload_time) 
+            upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            user_name = request.form.get('user_name')
+
+            image_record = ImageUpload(
+                image_path=filename,
+                name=filename,
+                upload_time=upload_time,
+                user_name=user_name,
+                red_pixels=red,
+                green_pixels=green,
+                blue_pixels=blue
+            )
+
             db.session.add(image_record)
             db.session.commit()
 
             return render_template('upload_success.html', upload_time=upload_time)
-
 
     return render_template('upload_image.html')  # Página con el formulario de carga de imág
 
