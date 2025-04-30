@@ -1,76 +1,32 @@
-{% extends "base.html" %}
-{% block title %}Restaurant Details{% endblock %}
-{% block head %}
-    {{ super() }}
-    <style>
-      body {
-          min-height: 75rem;
-          padding-top: 4.5rem;
-      }
-    </style>
-{% endblock %}
-{% block content %}
-  <h1>{{ restaurant.name }}</h1>
-  
-  <!-- Imagen del restaurante -->
-  <div class="mb-3">
-      <img src="{{ url_for('static', filename='images/' + restaurant.image) }}" alt="Restaurant Image" class="img-fluid">
-  </div>
+<h4 class="mt-5">Uploaded Images Details</h4>
 
-  <!-- Fecha y hora de creación -->
-  <div class="row">
-      <div class="col-md-2 fw-bold">Created At:</div>
-      <div class="col">{{ restaurant.created_at }}</div>
-  </div>
-
-  <!-- Dirección del restaurante -->
-  <div class="row">
-      <div class="col-md-2 fw-bold">Street address:</div>
-      <div class="col">{{ restaurant.street_address }}</div>
-  </div>
-  
-  <!-- Descripción del restaurante -->
-  <div class="row">
-      <div class="col-md-2 fw-bold">Description:</div>
-      <div class="col">{{ restaurant.description }}</div>                
-  </div>
-
-  <h4 class="mt-5">Reviews</h4>
-
-  <p>
-      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-          Add new review
-      </button>
-  </p>
-
-  {% if reviews %}
-        <table class="table">
-            <thead>
+{% if images %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Red Pixels</th>
+                <th>Green Pixels</th>
+                <th>Blue Pixels</th>
+                <th>Uploaded At</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in images %}
                 <tr>
-                    <th>Date</th>
-                    <th>User</th>
-                    <th>Rating</th>
-                    <th>Review</th>
+                    <td>{{ image.user_name }}</td>
+                    <td>{{ image.red_pixels }}</td>
+                    <td>{{ image.green_pixels }}</td>
+                    <td>{{ image.blue_pixels }}</td>
+                    <td>{{ image.upload_time }}</td>
+                    <td>
+                        <img src="{{ url_for('uploaded_file', filename=image.image_path) }}" alt="Uploaded Image" style="width: 100px;">
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for review in reviews %}
-                    <tr>
-                        <td>{{ review.review_date }}</td>
-                        <td>{{ review.user_name }}</td>
-                        <td>{{ review.rating }}</td>
-                        <td>{{ review.review_text }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No reviews of this restaurant yet.</p>
-    {% endif %}
-
-    <!-- Modal -->
-    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
-        <!-- Modal Content Goes Here -->
-    </div>
-
-{% endblock %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No uploaded images yet.</p>
+{% endif %}

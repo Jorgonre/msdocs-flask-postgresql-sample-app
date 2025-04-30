@@ -35,5 +35,10 @@ class Review(db.Model):
 # Modelo de base de datos para almacenar la información de la imagen subida
 class ImageUpload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    image_path = db.Column(db.String(200), nullable=False)
-    upload_time = db.Column(db.String(50), nullable=False)
+    user_name = db.Column(db.String(100))
+    image_path = db.Column(db.String(200))
+    upload_time = db.Column(db.String(100))
+    red_pixels = db.Column(db.Integer)
+    green_pixels = db.Column(db.Integer)
+    blue_pixels = db.Column(db.Integer)
+
