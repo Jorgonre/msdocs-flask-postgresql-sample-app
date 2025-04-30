@@ -19,9 +19,10 @@
                     <td>{{ image.red_pixels }}</td>
                     <td>{{ image.green_pixels }}</td>
                     <td>{{ image.blue_pixels }}</td>
+                    <td>{{ image.name }}</td>
                     <td>{{ image.upload_time }}</td>
                     <td>
-                        <img src="{{ url_for('uploaded_file', filename=image.image_path) }}" alt="Uploaded Image" style="width: 300px;">
+                        <img src="{{ url_for('uploaded_file', filename=image.image_path) }}" alt="Uploaded Image" style="width: 100px; height: 100px;">
                     </td>
                 </tr>
             {% endfor %}

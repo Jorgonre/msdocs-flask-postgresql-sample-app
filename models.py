@@ -36,6 +36,7 @@ class Review(db.Model):
 class ImageUpload(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(100))
+    name = db.Column(db.String(100))
     image_path = db.Column(db.String(200))
     upload_time = db.Column(db.String(100))
     red_pixels = db.Column(db.Integer)
