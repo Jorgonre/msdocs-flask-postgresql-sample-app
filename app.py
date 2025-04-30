@@ -9,6 +9,8 @@ from flask import Flask, jsonify
 
 
 
+
+
 os.urandom(24)
 
 app = Flask(__name__, static_folder='static')
@@ -84,41 +86,39 @@ def upload_image():
         if file.filename == '':
             return "No selected file", 400
 
+        user_name = request.form.get('user_name')
+        red_pixels = request.form.get('red_pixels')
+        green_pixels = request.form.get('green_pixels')
+        blue_pixels = request.form.get('blue_pixels')
+
+        if not user_name or not red_pixels or not green_pixels or not blue_pixels:
+            return "All fields are required", 400
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-
             upload_folder = os.path.join(app.root_path, 'uploads')
             os.makedirs(upload_folder, exist_ok=True)
-
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
-            # Calcular colores usando PIL
-            image = Image.open(filepath).convert('RGB')
-            pixels = list(image.getdata())
-            red = sum(p[0] for p in pixels)
-            green = sum(p[1] for p in pixels)
-            blue = sum(p[2] for p in pixels)
-
             upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            user_name = request.form.get('user_name')
 
             image_record = ImageUpload(
                 image_path=filename,
-                name=filename,
-                upload_time=upload_time,
+                name=filename,  # Guardamos el nombre del archivo como "name"
                 user_name=user_name,
-                red_pixels=red,
-                green_pixels=green,
-                blue_pixels=blue
+                red_pixels=int(red_pixels),
+                green_pixels=int(green_pixels),
+                blue_pixels=int(blue_pixels),
+                upload_time=upload_time
             )
-
             db.session.add(image_record)
             db.session.commit()
 
             return render_template('upload_success.html', upload_time=upload_time)
 
-    return render_template('upload_image.html')  # Página con el formulario de carga de imág
+    return render_template('upload_image.html')
+
 
 # Método para verificar que el archivo tiene una extensión permitida
 def allowed_file(filename):
