@@ -108,7 +108,8 @@ def upload_image():
             db.session.add(image_record)
             db.session.commit()
 
-            return f"Image uploaded successfully! Uploaded at: {upload_time}"
+            return render_template('upload_success.html', upload_time=upload_time)
+
 
     return render_template('upload_image.html')  # Página con el formulario de carga de imág
 
