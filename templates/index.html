@@ -10,32 +10,37 @@
     </style>
 {% endblock %}
 {% block content %}
-      <h1>Images</h1>
+    <h1>Images</h1>
 
-      {% if restaurants %}
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th>Image</th>
-                      <th>Name</th>
-                      <th>Rating</th>
-                      <th class="text-end">Details</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for restaurant in restaurants %}
-                      <tr>
-                          <td><img src="{{ url_for('static', filename='images/' + restaurant.image) }}" alt="Restaurant Image" style="width: 50px; height: 50px;"></td>
-                          <td>{{ restaurant.name }}</td>
-                          <td>{% include "star_rating.html" %}</td>
-                          <td class="text-end"><a href="{{ url_for('details', id=restaurant.id) }}" class="btn btn-sm btn-primary">Details</a></td>
-                      </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-      {% else %}
-          <p>No images exist. Select Add new image to add one.</p>
-      {% endif %}
+    {% if images %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Red Pixels</th>
+                    <th>Green Pixels</th>
+                    <th>Blue Pixels</th>
+                    <th>Uploaded At</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for image in images %}
+                    <tr>
+                        <td>{{ image.user_name }}</td>
+                        <td>{{ image.red_pixels }}</td>
+                        <td>{{ image.green_pixels }}</td>
+                        <td>{{ image.blue_pixels }}</td>
+                        <td>{{ image.upload_time }}</td>
+                        <td><img src="{{ url_for('uploaded_file', filename=image.image_path) }}" alt="Uploaded Image" style="width: 50px; height: 50px;"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No images exist. Select Add new image to add one.</p>
+    {% endif %}
+        
 
       <div class="d-flex justify-content-end">
               <a href="{{ url_for('create_image') }}" class="btn btn-success px-4 gap-3">Add new image</a>
