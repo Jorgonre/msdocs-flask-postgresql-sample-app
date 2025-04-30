@@ -73,7 +73,7 @@ def details(id):
 
 @app.route('/create', methods=['GET'])
 def create_image():
-    print('Request for add restaurant page received')
+    print('Request for add image page received')
     return render_template('create_image.html')
 
 # Nueva ruta para subir imágenes
