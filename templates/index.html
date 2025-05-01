@@ -14,17 +14,43 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Images</h1>
         <form method="get" class="d-flex align-items-center">
-          <label for="sort" class="me-2 mb-0">Ordenar por:</label>
+          <label for="sort" class="me-3 mb-0">Ordenar por:</label>
           <select name="sort" id="sort" class="form-select form-select-sm" onchange="this.form.submit()">
-            <option value="newest" {% if current_sort=='newest' %}selected{% endif %}>
-              Más reciente primero
-            </option>
-            <option value="oldest" {% if current_sort=='oldest' %}selected{% endif %}>
-              Más antiguo primero
-            </option>
+            <optgroup label="Fecha de subida">
+              <option value="time_desc" {% if current_sort=='time_desc' %}selected{% endif %}>
+                Más reciente primero
+              </option>
+              <option value="time_asc" {% if current_sort=='time_asc' %}selected{% endif %}>
+                Más antiguo primero
+              </option>
+            </optgroup>
+            <optgroup label="Píxeles rojos">
+              <option value="red_desc" {% if current_sort=='red_desc' %}selected{% endif %}>
+                Más rojos primero
+              </option>
+              <option value="red_asc" {% if current_sort=='red_asc' %}selected{% endif %}>
+                Menos rojos primero
+              </option>
+            </optgroup>
+            <optgroup label="Píxeles verdes">
+              <option value="green_desc" {% if current_sort=='green_desc' %}selected{% endif %}>
+                Más verdes primero
+              </option>
+              <option value="green_asc" {% if current_sort=='green_asc' %}selected{% endif %}>
+                Menos verdes primero
+              </option>
+            </optgroup>
+            <optgroup label="Píxeles azules">
+              <option value="blue_desc" {% if current_sort=='blue_desc' %}selected{% endif %}>
+                Más azules primero
+              </option>
+              <option value="blue_asc" {% if current_sort=='blue_asc' %}selected{% endif %}>
+                Menos azules primero
+              </option>
+            </optgroup>
           </select>
         </form>
-      </div>
+      </div>      
       
     {% if images %}
         <table class="table">

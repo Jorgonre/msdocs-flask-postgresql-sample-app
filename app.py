@@ -61,14 +61,33 @@ from models import Restaurant, Review, ImageUpload
 # Rutas existentes...
 @app.route('/', methods=['GET'])
 def index():
-    sort = request.args.get('sort', 'newest')  # por defecto newest
-    # Elige la dirección del order_by según sort
-    if sort == 'oldest':
-        images = ImageUpload.query.order_by(asc(ImageUpload.upload_time)).all()
-    else:
-        images = ImageUpload.query.order_by(desc(ImageUpload.upload_time)).all()
+    # Recogemos el parámetro ?sort del query-string; valor por defecto 'time_desc'
+    sort = request.args.get('sort', 'time_desc')
 
+    # Preparamos el mapeo de opciones a la cláusula order_by
+    if sort == 'time_asc':
+        ordering = asc(ImageUpload.upload_time)
+    elif sort == 'time_desc':
+        ordering = desc(ImageUpload.upload_time)
+    elif sort == 'red_asc':
+        ordering = asc(ImageUpload.red_pixels)
+    elif sort == 'red_desc':
+        ordering = desc(ImageUpload.red_pixels)
+    elif sort == 'green_asc':
+        ordering = asc(ImageUpload.green_pixels)
+    elif sort == 'green_desc':
+        ordering = desc(ImageUpload.green_pixels)
+    elif sort == 'blue_asc':
+        ordering = asc(ImageUpload.blue_pixels)
+    elif sort == 'blue_desc':
+        ordering = desc(ImageUpload.blue_pixels)
+    else:
+        # En caso de que venga cualquier otra cosa, garantizamos un orden por defecto
+        ordering = desc(ImageUpload.upload_time)
+
+    images = ImageUpload.query.order_by(ordering).all()
     return render_template('index.html', images=images, current_sort=sort)
+
 
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
