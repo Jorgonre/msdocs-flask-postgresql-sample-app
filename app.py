@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, and_
 
 
 
@@ -61,10 +61,12 @@ from models import Restaurant, Review, ImageUpload
 # Rutas existentes...
 @app.route('/', methods=['GET'])
 def index():
-    # Recogemos el parámetro ?sort del query-string; valor por defecto 'time_desc'
     sort = request.args.get('sort', 'time_desc')
+    user_filter = request.args.get('user_name', '').strip()
+    from_date = request.args.get('from_date', '').strip()
+    to_date = request.args.get('to_date', '').strip()
 
-    # Preparamos el mapeo de opciones a la cláusula order_by
+    # Orden
     if sort == 'time_asc':
         ordering = asc(ImageUpload.upload_time)
     elif sort == 'time_desc':
@@ -82,11 +84,27 @@ def index():
     elif sort == 'blue_desc':
         ordering = desc(ImageUpload.blue_pixels)
     else:
-        # En caso de que venga cualquier otra cosa, garantizamos un orden por defecto
         ordering = desc(ImageUpload.upload_time)
 
-    images = ImageUpload.query.order_by(ordering).all()
-    return render_template('index.html', images=images, current_sort=sort)
+    # Filtros
+    filters = []
+    if user_filter:
+        filters.append(ImageUpload.user_name.ilike(f"%{user_filter}%"))
+    if from_date:
+        filters.append(ImageUpload.upload_time >= from_date)
+    if to_date:
+        filters.append(ImageUpload.upload_time <= to_date)
+
+    images = ImageUpload.query.filter(and_(*filters)).order_by(ordering).all()
+
+    return render_template(
+        'index.html',
+        images=images,
+        current_sort=sort,
+        current_user_filter=user_filter,
+        current_from_date=from_date,
+        current_to_date=to_date
+    )
 
 
 @app.route('/<int:id>', methods=['GET'])
