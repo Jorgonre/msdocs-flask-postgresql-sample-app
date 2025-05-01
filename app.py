@@ -63,8 +63,18 @@ from models import Restaurant, Review, ImageUpload
 def index():
     sort = request.args.get('sort', 'time_desc')
     user_filter = request.args.get('user_name', '').strip()
-    from_date = request.args.get('from_date', '').strip()
-    to_date = request.args.get('to_date', '').strip()
+    from_d = request.args.get('from_date', '').strip()
+    to_d = request.args.get('to_date', '').strip()
+
+    # Función auxiliar para convertir input HTML 'datetime-local' a string como 'YYYY-MM-DD HH:MM:SS'
+    def parse_datetime_input(value):
+        try:
+            return datetime.strptime(value, '%Y-%m-%dT%H:%M').strftime('%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            return None
+
+    from_date = parse_datetime_input(from_d)
+    to_date = parse_datetime_input(to_d)
 
     # Orden
     if sort == 'time_asc':
