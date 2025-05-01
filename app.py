@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify
+from sqlalchemy import desc, asc
 
 
 
@@ -58,12 +59,15 @@ migrate = Migrate(app, db)
 from models import Restaurant, Review, ImageUpload
 
 # Rutas existentes...
-@app.route('/', methods=['GET'])
 def index():
-    print('Request for index page received')
-    restaurants = Restaurant.query.all()
-    images = ImageUpload.query.order_by(ImageUpload.upload_time.desc()).all()
-    return render_template('index.html', restaurants=restaurants, images=images)
+    sort = request.args.get('sort', 'newest')  # por defecto newest
+    # Elige la dirección del order_by según sort
+    if sort == 'oldest':
+        images = ImageUpload.query.order_by(asc(ImageUpload.upload_time)).all()
+    else:
+        images = ImageUpload.query.order_by(desc(ImageUpload.upload_time)).all()
+
+    return render_template('index.html', images=images, current_sort=sort)
 
 @app.route('/<int:id>', methods=['GET'])
 def details(id):
