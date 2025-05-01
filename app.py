@@ -59,6 +59,7 @@ migrate = Migrate(app, db)
 from models import Restaurant, Review, ImageUpload
 
 # Rutas existentes...
+@app.route('/', methods=['GET'])
 def index():
     sort = request.args.get('sort', 'newest')  # por defecto newest
     # Elige la dirección del order_by según sort
