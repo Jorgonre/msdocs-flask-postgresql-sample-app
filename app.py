@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, redirect, render_template, request, send_from_directory, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -101,7 +101,7 @@ def upload_image():
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
-            upload_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            upload_time = (datetime.now() + timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')
 
             image_record = ImageUpload(
                 image_path=filename,
