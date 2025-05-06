@@ -51,12 +51,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-
-
-
-
 # Los modelos deben ser importados después de la inicialización de la base de datos
-from models import Restaurant, Review, ImageUpload
+from models import ImageUpload
 
 # Rutas existentes...
 @app.route('/', methods=['GET'])
@@ -179,10 +175,6 @@ def allowed_file(filename):
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
-
-#@app.route('/health', methods=['GET'])
-#def health_check():
-    #return jsonify({"status": "healthy"}), 200
 
 
 # Rutas adicionales y utilidades...
